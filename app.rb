@@ -1,14 +1,15 @@
 require "sinatra"
 require 'koala'
 require 'active_record'
+require 'sinatra/activerecord'
 require 'uri'
 
 configure :development do
-    set :database, 'mysql://localhost/doodler'
+    set :database, 'mysql://root:toor@localhost/doodler'
 end
 
 configure :test do
-    set :database, 'mysql://localhost/doodler'
+    set :database, 'mysql://root:toor@localhost/doodler'
 end
 
 configure :production do

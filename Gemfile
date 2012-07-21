@@ -6,4 +6,13 @@ gem "json"
 gem "httparty"
 gem "thin"
 gem "activerecord"
-gem "mysql2"
+gem 'sinatra-activerecord'
+gem 'rake'
+
+group :development, :test do
+    gem "mysql"
+end
+
+group :production do
+    gem 'pg'
+end

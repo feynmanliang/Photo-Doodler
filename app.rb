@@ -25,6 +25,13 @@ configure :production do
     )
 end
 
+# Models
+class Doodle < ActiveRecord::Base
+
+end
+
+# Facebook BP Code
+
 enable :sessions
 set :raise_errors, false
 set :show_exceptions, false

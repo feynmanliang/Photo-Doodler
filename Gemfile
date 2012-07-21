@@ -8,6 +8,7 @@ gem "thin"
 gem "activerecord"
 gem 'sinatra-activerecord'
 gem 'rake'
+gem 'racksh'
 
 group :development, :test do
     gem "mysql"

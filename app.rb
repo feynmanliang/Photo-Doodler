@@ -1,5 +1,28 @@
 require "sinatra"
 require 'koala'
+require 'active_record'
+require 'uri'
+
+configure :development do
+    set :database, 'mysql://localhost/doodler'
+end
+
+configure :test do
+    set :database, 'mysql://localhost/doodler'
+end
+
+configure :production do
+    db = URI.parse(ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
+    ActiveRecord::Base.establish_connection(
+        :adapter  => db.scheme == 'postgres' ? 'postgresql' : 'mysql2',
+        :host     => db.host,
+        :port     => db.port,
+        :username => db.user,
+        :password => db.password,
+        :database => db.path[1..-1],
+        :encoding => 'utf8'
+    )
+end
 
 enable :sessions
 set :raise_errors, false
@@ -51,6 +74,7 @@ end
 # the facebook session expired! reset ours and restart the process
 error(Koala::Facebook::APIError) do
   session[:access_token] = nil
+
   redirect "/auth/facebook"
 end
 

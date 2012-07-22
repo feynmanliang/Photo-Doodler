@@ -1,0 +1,80 @@
+#picture + div {
+  margin-left: 82px;
+}
+
+#picture {
+  background-position: center 25%;
+  background-repeat: no-repeat;
+  background-size: 20px;
+  margin-right: 18px;
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+}
+
+#share-app {
+  float: right;
+  width: 344px;
+}
+
+#share-app ul {
+  float: right;
+}
+
+#share-app p {
+  float: left;
+  margin-left: 8px;
+}
+
+#share-app li {
+  float: left;
+  list-style: none;
+  margin-left: 8px;
+}
+/* ------------------------------------------ */
+
+/* =buttons
+--------------------------------------------- */
+.facebook-button:link, .facebook-button:visited {
+  background-color: #eee;
+  background-image: -moz-linear-gradient(top, #fdfdfd, #eaebeb);
+  background-image: -ms-linear-gradient(top, #fdfdfd, #eaebeb);
+  background-image: -o-linear-gradient(top, #fdfdfd, #eaebeb));
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#fdfdfd), to(#eaebeb));
+  background-image: -webkit-linear-gradient(top, #fdfdfd, #eaebeb);
+  background-image: linear-gradient(top, #fdfdfd, #eaebeb);
+  border: 1px solid #a9a9a9;
+  -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, .1);
+  -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .1);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .1);
+  color: #4f4f4f;
+  display: -moz-inline-box;
+  display: inline-block;
+  font-family: 'Lucida Grande', Tahoma, Verdana, Arial, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 20px;
+  margin: 0;
+  outline: none;
+  text-decoration: none;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, .33);
+}
+
+.facebook-button span {
+  background: url("../images/sprites.png") no-repeat;
+  padding: 0 7px 0 21px;
+}
+
+.facebook-button .speech-bubble {
+  background-position: 6px 3px;
+}
+
+.facebook-button .plus {
+  background-position: 6px -17px;
+}
+
+.facebook-button .apprequests {
+  background-position: 6px -37px;
+}
+
+

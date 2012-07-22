@@ -2,15 +2,22 @@
 <html xmlns:fb="http://ogp.me/ns/fb#" lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
-
     <title><%= @app['name'] %></title>
-    <!--<link rel="stylesheet" href="stylesheets/screen.css" media="Screen" type="text/css" />-->
-    <!--<link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-width: 480px), only screen and (max-device-width: 480px)" type="text/css" />-->
-    <link rel="stylesheet" href="stylesheets/bootstrap.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
+    <meta name="description" content="Doodle on your Facebook photos!">
+    <meta name="author" content="Feynman Liang, Eduardo Salinas, JJ Liu">
 
-    <!--[if IEMobile]>
-    <link rel="stylesheet" href="mobile.css" media="screen" type="text/css"  />
+    <link rel="stylesheet" href="../stylesheets/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="stylesheets/custom.css" type="text/css" />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
     <!-- These are Open Graph tags.  They add meta data to your  -->
@@ -93,6 +100,7 @@
       </script>
     <![endif]-->
   </head>
+
   <body>
     <div id="fb-root"></div>
     <script type="text/javascript">
@@ -129,46 +137,36 @@
       }(document, 'script', 'facebook-jssdk'));
     </script>
 
-    <header class="clearfix">
-      <% if @user %>
-          <p id="picture" style="background-image: url(https://graph.facebook.com/<%= @user['id'] %>/picture?type=normal)"></p>
-          <div>
-            <h1>Welcome, <strong><%= @user['name'] %></strong></h1>
-            <p class="tagline">
-              This is your app
-              <a href="<%= @app['@app'] %>"><%= @app['name'] %></a>
-            </p>
-            <div id="share-app">
-              <p>Share your app:</p>
-              <ul>
-                <li>
-                  <a href="#" class="facebook-button" id="postToWall" data-url="<%= url %>">
-                    <span class="plus">Post to Wall</span>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="<%= @app['@app'] %>"><%= @app['name'] %></a>
+          <div class="btn-group pull-right">
+              <% if @user %>
+                  <p id="picture" style="background-image: url(https://graph.facebook.com/<%= @user['id'] %>/picture?type=normal)"></p>
+              <% else %>
+                  <a href='/auth/facebook' class="fb_button fb_button_medium">
+                      <span class="fb_button_text">Log In</span>
                   </a>
-                </li>
-                <li>
-                  <a href="#" class="facebook-button speech-bubble" id="sendToFriends" data-url="<%= url %>">
-                    <span class="speech-bubble">Send Message</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="#" class="facebook-button apprequests" id="sendRequest" data-message="Test this awesome app">
-                    <span class="apprequests">Send Requests</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
+              <% end %>
           </div>
-      <% else %>
-        <div>
-          <h1>Welcome</h1>
-            <a href='/auth/facebook' class="fb_button fb_button_medium">
-              <span class="fb_button_text">Log In</span>
-            </a>
+           <div class="nav-collapse">
+            <ul class="nav">
+                <li><a id="choose-new-link" href="../doodles/new">Create New</a></li>
+                <li><a id="choose-existing-link" href="../doodles">Show Existing</a></li>
+             </ul>
+          </div><!--/.nav-collapse -->
         </div>
+      </div>
+    </div>
 
-      <% end %>
-    </header>
+    <div class="container">
       <%= yield %>
-  </body>
+    </div>
+    </body>
 </html>

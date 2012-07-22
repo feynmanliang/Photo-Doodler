@@ -10,6 +10,8 @@
                 </li>
             <% end %>
         </ul>
+            <a href="/doodles/new?page=<%= CGI.escape @photos.paging['previous'] %>">prev</a>
+            <a href="/doodles/new?page=<%= CGI.escape @photos.paging['next'] %>">next</a>
     </div>
     <div class="clearfix"></div>
 <% end %>

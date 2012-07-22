@@ -45,7 +45,7 @@ set :show_exceptions, false
 # permissions your app needs.
 # See https://developers.facebook.com/docs/reference/api/permissions/
 # for a full list of permissions
-FACEBOOK_SCOPE = 'user_likes,user_photos,user_photo_video_tags'
+FACEBOOK_SCOPE = 'user_likes,user_photos,user_photo_video_tags,publish_stream'
 
 unless ENV["FACEBOOK_APP_ID"] && ENV["FACEBOOK_SECRET"]
     abort("missing env vars: please set FACEBOOK_APP_ID and FACEBOOK_SECRET with your app credentials")
@@ -96,11 +96,23 @@ error(Koala::Facebook::APIError) do
     redirect "/auth/facebook"
 end
 
+get "/post" do
+    # Get base API Connection
+    @graph  = Koala::Facebook::API.new(session[:access_token])
+
+    # Get public details of current application
+    @app  =  @graph.get_object(ENV["FACEBOOK_APP_ID"])
+    if session[:access_token]
+        @graph.put_connections("me", "links", {:name => "le goog", :link => "www.google.com", :picture => "http://lh4.googleusercontent.com/-v0soe-ievYE/AAAAAAAAAAI/AAAAAAAAdPc/JRVJ5ihOy2U/photo.jpg?sz=116"});
+    end
+    "asdf"
+end
+
 get "/" do
     @graph, @app = fbinit()
     if session[:access_token]
         @user    = @graph.get_object("me")
-        @photos  = @graph.get_connections('me', 'photos').first(24)
+        @photos  = @graph.get_connections('me', 'photos')
         @friends_using_app = @graph.fql_query("SELECT uid, name, is_app_user, pic_square FROM user WHERE uid in (SELECT uid2 FROM friend WHERE uid1 = me()) AND is_app_user = 1")
     end
     @recent_doodles = Doodle.find(:all, :order => "id desc", :limit => 6).reverse
@@ -148,7 +160,13 @@ get '/doodles/new' do
     @graph, @app = fbinit()
     if session[:access_token]
         @user    = @graph.get_object("me")
-        @photos  = @graph.get_connections('me', 'photos').first(24)
+        if params[:page]
+            fake_graph_collection = Koala::Facebook::GraphCollection.new({"data" => []}, @graph)
+            url_params = fake_graph_collection.parse_page_url(params[:page])
+            @photos = @graph.get_page(url_params)
+        else
+            @photos  = @graph.get_connections('me', 'photos')
+        end
         @friends_using_app = @graph.fql_query("SELECT uid, name, is_app_user, pic_square FROM user WHERE uid in (SELECT uid2 FROM friend WHERE uid1 = me()) AND is_app_user = 1")
         @friends = @graph.get_connections('me', 'friends')
         erb :newdoodle

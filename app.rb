@@ -95,16 +95,12 @@ error(Koala::Facebook::APIError) do
     redirect "/auth/facebook"
 end
 
-get "/post" do
-    # Get base API Connection
-    @graph  = Koala::Facebook::API.new(session[:access_token])
+get "/post/:link" do |link|
+    @graph, @app = fbinit()
 
-    # Get public details of current application
-    @app  =  @graph.get_object(ENV["FACEBOOK_APP_ID"])
-    if session[:access_token]
-        @graph.put_connections("me", "links", {:name => "le goog", :link => "www.google.com", :picture => "http://lh4.googleusercontent.com/-v0soe-ievYE/AAAAAAAAAAI/AAAAAAAAdPc/JRVJ5ihOy2U/photo.jpg?sz=116"});
+   if session[:access_token]
+        @graph.put_connections("me", "links", {:name => "Doodler", :link => link});
     end
-    "asdf"
 end
 
 get "/" do
@@ -166,7 +162,7 @@ get '/:photoid/json' do |photoid|
     content_type :json
     @graph, @app = fbinit()
     @graph  = Koala::Facebook::API.new(session[:access_token])
-    @doodles = Doodle.where("photoid = ?", photoid)
+    @doodles = Doodle.where("photoid = ?", photoid).reverse
 
     response = []
     @doodles.each do |doodle|
@@ -213,7 +209,7 @@ post '/:photoid/save' do |photoid|
                                 photoid: @photoid.to_s,
                                 data: params[:data])
         new_doodle.save()
-        params.to_s
+        "1"
     else
         "0"
     end
@@ -234,29 +230,6 @@ get '/:photoid/:doodleid/delete' do |photoid, doodleid|
         redirect '/'
     end
 end
-
-
-get '/seeddata' do
-    @graph, @app = fbinit()
-    if session[:access_token]
-        @userid = @graph.get_object("me")
-        @photoid = "10150788524506026"
-
-        d1 = Doodle.new(userid: @userid["id"].to_s,
-                                photoid: @photoid.to_s,
-                                data: "[{'x':95,'y':30,'color':'#cb3594','tool':'crayon','size':'normal','drag':false},{'x':50,'y':30,'color':'#cb3594','tool':'crayon','size':'normal','drag':true}]")
-        d1.save()
-
-        d2 = Doodle.new(userid: @userid["id"].to_s,
-                        photoid: @photoid.to_s,
-                        data: "[{'x':195,'y':30,'color':'#986928','tool':'crayon','size':'normal','drag':false},{'x':150,'y':30,'color':'#986928','tool':'crayon','size':'normal','drag':true}]")
-        d2.save()
-        redirect '/'
-    else
-        "Not Logged In!"
-    end
-end
-
 
 get '/:photoid' do |photoid|
     @graph, @app = fbinit()

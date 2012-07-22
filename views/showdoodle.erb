@@ -49,6 +49,10 @@
 	<div style="float: left; width: 150px;">
 		<div><input style="width: 80px" type="text" value="#CCCC66" class="izzyColor" id="color"></div>
 		<button type="button" onclick="drawingApp.save()">Save</button>	
+        <a href="#" class="facebook-button" id="postToWall" data-url="<%= url + "/" + @photoid %>">
+            <span class="plus">Post to Wall</span>
+        </a>
+        <!--<button type="button" onclick="$.get('/post'+window.location.pathname);">Share</button>	-->
 		<div id="doodleSelector"></div>
 	</div>
 	<br style="clear: left;" />

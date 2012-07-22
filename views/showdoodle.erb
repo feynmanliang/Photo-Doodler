@@ -30,7 +30,20 @@
 				type: "GET",
 				url: "<%= @photoid %>/json"
 			}).done(function( msg ) {
-				console.log(msg);
+				drawingApp.init(eval(msg));
+				DoodleSelector.addSelector(eval(msg));
+
+			
+			$(".selectorCheckbox").change(function () {
+				var checked=new Array();
+				$(".selectorCheckbox").each(function () {
+					if ($(this).is(':checked')){
+						checked.push($(this).val());
+					}
+				});
+				drawingApp.initialImage(eval(msg), checked);
+			});
+
 			});
 
 		
@@ -72,18 +85,7 @@
 				}
 			];
 
-			drawingApp.init(eval(d1));
-			DoodleSelector.addSelector(eval(d3));
-			
-			$(".selectorCheckbox").change(function () {
-				var checked=new Array();
-				$(".selectorCheckbox").each(function () {
-					if ($(this).is(':checked')){
-						checked.push($(this).val());
-					}
-				});
-				drawingApp.initialImage(eval(d1), checked);
-			});
+
 		});
 
 	</script>

@@ -114,7 +114,7 @@ var drawingApp = (function () {
 		// @param y
 		// @param dragging
 		addClick = function (x, y, dragging) {
-			var p = new Point(x, y, curColor, curTool, curSize, dragging);
+			var p = new Point(x, y, curColor, curSize, dragging);
 			drawingPoints.push(p);
 		},
 
@@ -179,10 +179,10 @@ var drawingApp = (function () {
 			//add existing doodles
 			for(var i=0;i<existingDoodle.length; i++){
 				if(doodlesToBeShownArray == undefined)
-					drawPoints(existingDoodle[i].dataPoints, 0);
+					drawPoints(eval(existingDoodle[i].data), 0);
 				else{
 					if($.inArray(i.toString(), doodlesToBeShownArray) != -1)
-						drawPoints(existingDoodle[i].dataPoints, 0);
+						drawPoints(eval(existingDoodle[i].data), 0);
 				}
 			}
 			drawPoints(drawingPoints,0);

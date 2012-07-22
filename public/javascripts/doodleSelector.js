@@ -1,5 +1,3 @@
-
-
 var DoodleSelector = (function () {
 	var canvas,
 

@@ -141,22 +141,10 @@ end
 
 get '/auth/facebook/callback' do
     session[:access_token] = authenticator.get_access_token(params[:code])
-    #redirect '/'
-    redirect 'http://127.0.0.1:5000/doodles/10150788524506026/json'
+    redirect '/'
 end
 
-get '/doodles' do
-    @graph, @app = fbinit()
-    if session[:access_token]
-        @user    = @graph.get_object("me")
-        @friends_using_app = @graph.fql_query("SELECT uid, name, is_app_user, pic_square FROM user WHERE uid in (SELECT uid2 FROM friend WHERE uid1 = me()) AND is_app_user = 1")
-        erb :doodles
-    else
-        redirect '/'
-    end
-end
-
-get '/doodles/new' do
+get '/new' do
     @graph, @app = fbinit()
     if session[:access_token]
         @user    = @graph.get_object("me")
@@ -175,36 +163,32 @@ get '/doodles/new' do
     end
 end
 
-get '/doodles/new/:photoid' do |photoid|
+get '/:photoid' do |photoid|
     @graph, @app = fbinit()
-    if session[:access_token]
-        @userid = @graph.get_object("me")
-        @photoid = photoid
-
-        thisDoodle = Doodle.new(userid: @userid["id"].to_s,
-                                photoid: @photoid.to_s,
-                                data: "")
-        thisDoodle.save()
-        redirect '/doodles/' + thisDoodle[:photoid].to_s
-    else
-        redirect '/'
-    end
-end
-
-get '/doodles/:photoid' do |photoid|
-    @graph, @app = fbinit()
+    @graph  = Koala::Facebook::API.new(session[:access_token])
     if session[:access_token]
         @user    = @graph.get_object("me")
-        @photos  = @graph.get_connections('me', 'photos').first(24)
-        @friends_using_app = @graph.fql_query("SELECT uid, name, is_app_user, pic_square FROM user WHERE uid in (SELECT uid2 FROM friend WHERE uid1 = me()) AND is_app_user = 1")
+        if /^[\d]+(\.[\d]+){0,1}$/ === photoid
+            @doodles = Doodle.where("photoid = ?", photoid)
+            if @doodles.length != 0
+                erb :showdoodle
+            else
+                begin
+                    @graph.get_object(photoid)
+                rescue
+                    redirect '/'
+                end
+                erb :showdoodle
+            end
+        else
+            redirect '/'
+        end
     else
         redirect '/'
     end
-    @doodles = Doodle.where("photoid = ?", photoid)
-    erb :showdoodle
 end
 
-get '/doodles/:photoid/json' do |photoid|
+get '/:photoid/json' do |photoid|
     content_type :json
     @graph, @app = fbinit()
     @graph  = Koala::Facebook::API.new(session[:access_token])
@@ -242,4 +226,34 @@ post '/fetch_list' do
         "</a> </li>"
     end
         string = string + "</ul>"
+post '/:photoid/save' do
+    @graph, @app = fbinit()
+    if session[:access_token]
+        @userid = @graph.get_object("me")
+        @photoid = photoid
+
+        new_doodle = Doodle.new(userid: @userid["id"].to_s,
+                                photoid: @photoid.to_s,
+                                data: params[:data])
+        new_doodle.save()
+        redirect '/' + new_doodle[:photoid].to_s
+    else
+        redirect '/'
+    end
+end
+
+get '/:photoid/:doodleid/delete' do |photoid, doodleid|
+    @graph, @app = fbinit()
+    if session[:access_token]
+        @doodle = Doodle.find(doodleid)
+
+        if @doodle[:userid] == @graph.get_object("me")["id"]
+            @doodle.destroy()
+            @doodle.save()
+        end
+
+        redirect '/' + photoid.to_s
+    else
+        redirect '/'
+    end
 end

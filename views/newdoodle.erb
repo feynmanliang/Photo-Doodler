@@ -4,14 +4,14 @@
         <ul class="gridlist">
             <% @photos.each_with_index do |photo, index| %>
                 <li>
-                <a href="../doodles/new/<%= photo['id'] %>">
+                <a href="../<%= photo['id'] %>">
                     <img width="94px" height="70px" src="<%= photo['picture'] %>)" />
                 </a>
                 </li>
             <% end %>
         </ul>
-            <a href="/doodles/new?page=<%= CGI.escape @photos.paging['previous'] %>">prev</a>
-            <a href="/doodles/new?page=<%= CGI.escape @photos.paging['next'] %>">next</a>
+            <a href="/new?page=<%= CGI.escape @photos.paging['previous'] %>">prev</a>
+            <a href="/new?page=<%= CGI.escape @photos.paging['next'] %>">next</a>
     </div>
     <div class="clearfix"></div>
 <% end %>

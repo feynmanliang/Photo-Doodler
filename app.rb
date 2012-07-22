@@ -172,7 +172,7 @@ get '/doodles/new/:photoID' do
     end
 end
 
-get '/doodles/:doodleID' do |doodleID|
+get '/doodles/:photoID' do |photoID|
     @graph, @app = fbinit()
     if session[:access_token]
         @user    = @graph.get_object("me")
@@ -182,4 +182,9 @@ get '/doodles/:doodleID' do |doodleID|
         redirect '/'
     end
     erb :showdoodle
+end
+
+get '/doodles/:photoID/json' do |photoID|
+    content_type :json
+    Doodle.where("photoID = ?", photoID).to_json
 end

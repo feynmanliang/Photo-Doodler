@@ -2,9 +2,109 @@
    <div class="span12">
         <h3>Show/Edit Doodle</h3>
         <ul>
+	    
             <% @doodles.each do |doodle| %>
                 <li><%= doodle[:photoid] %>, <%= doodle[:id] %></li>
             <% end %>
         </ul>
     </div>
 <% end %>
+
+<html>
+  <body>
+    <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script type="text/javascript" src="../javascripts/jquery.json-2.3.min.js"></script>
+	
+    <script type="text/javascript" src="../javascripts/draw.js"></script>
+    <script type="text/javascript" src="../javascripts/point.js"></script>
+    <script type="text/javascript" src="../javascripts/doodle.js"></script>
+    <script type="text/javascript" src="../javascripts/doodleSelector.js"></script>
+	
+	<style type="text/css"> 
+
+	</style>
+    <script type="text/javascript">
+
+		$(document).ready(function() {
+			$.ajax({
+				type: "GET",
+				url: "<%= @photoid %>/json"
+			}).done(function( msg ) {
+				console.log(msg);
+			});
+
+		
+			var d1 = [
+				{"id":"ddddd","userId":"jj","photoId":"pppppp",
+						'dataPoints':[
+						{'x':95,'y':30,'color':'#cb3594','tool':'crayon','size':'normal','drag':false},
+						{'x':50,'y':30,'color':'#cb3594','tool':'crayon','size':'normal','drag':true}
+					]
+				},
+				{"id":"ddddd","userId":"jj2","photoId":"pppppp",
+						'dataPoints':[
+						{'x':195,'y':30,'color':'#986928','tool':'crayon','size':'normal','drag':false},
+						{'x':150,'y':30,'color':'#986928','tool':'crayon','size':'normal','drag':true}
+					]
+				}
+			];
+			
+			var d3 =  [
+			{"data": "",
+			"user_name": "Feynman Liang",
+			"photo_url": "https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-snc7/s720x720/581069_10150788524506026_243835281_n.jpg",
+			"profile_photo_url": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/202998_644816025_8099069_q.jpg",
+			"deleteable": true
+			}, {
+			"data": "",
+			"user_name": "Feynman Liang",
+			"photo_url": "https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-snc7/s720x720/581069_10150788524506026_243835281_n.jpg",
+			"profile_photo_url": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/202998_644816025_8099069_q.jpg",
+			"deleteable": true
+			}];
+			
+			var d2 = [
+				{"id":"ddddd","userId":"jj","photoId":"pppppp",
+						'dataPoints':[
+						{'x':95,'y':30,'color':'#cb3594','tool':'crayon','size':'normal','drag':false},
+						{'x':50,'y':30,'color':'#cb3594','tool':'crayon','size':'normal','drag':true}
+					]
+				}
+			];
+
+			drawingApp.init(eval(d1));
+			DoodleSelector.addSelector(eval(d3));
+			
+			$(".selectorCheckbox").change(function () {
+				var checked=new Array();
+				$(".selectorCheckbox").each(function () {
+					if ($(this).is(':checked')){
+						checked.push($(this).val());
+					}
+				});
+				drawingApp.initialImage(eval(d1), checked);
+			});
+		});
+
+	</script>
+	
+
+	
+<div style="width: 700px;">
+	<div id ="canvasDiv" style="float: left; width: 500px;"></div>
+	<div style="float: left; width: 200px;">
+		<button type="button" onclick="drawingApp.save()">Save</button>
+		<button type="button" onclick="drawingApp.initialImage(eval(d2))">img</button>	
+	
+		<div id="doodleSelector">
+		</div>	
+	
+	
+	</div>
+	<br style="clear: left;" />
+</div>
+	
+	<div id="sendjson"></div>
+  </body>
+</html>

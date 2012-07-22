@@ -2,7 +2,6 @@ require "sinatra"
 require 'koala'
 require 'active_record'
 require 'sinatra/activerecord'
-require 'uri'
 
 configure :development do
     set :database, 'mysql://root:toor@localhost/doodler'
@@ -166,6 +165,7 @@ end
 get '/:photoid' do |photoid|
     @graph, @app = fbinit()
     @graph  = Koala::Facebook::API.new(session[:access_token])
+    @photoid = photoid
     if session[:access_token]
         @user    = @graph.get_object("me")
         if /^[\d]+(\.[\d]+){0,1}$/ === photoid
@@ -198,7 +198,7 @@ get '/:photoid/json' do |photoid|
     @doodles.each do |doodle|
         formatted_doodle = { data: doodle[:data],
                              user_name: @graph.get_object(doodle[:userid])["name"],
-                             photo_url: @graph.get_object(doodle[:photoid])["source"],
+                             #photo_url: @graph.get_object(doodle[:photoid])["source"],
                              profile_photo_url: @graph.get_picture(doodle[:userid]),
                              deleteable: doodle[:userid] == @graph.get_object("me")["id"]
         }

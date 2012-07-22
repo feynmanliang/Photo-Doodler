@@ -4,26 +4,26 @@
         <ul class="photos">
             <% @photos.each_with_index do |photo, index| %>
                 <li>
-                <img src="<%= photo['picture'] %>)" />
                 <a href="#" onclick="window.open('http://www.facebook.com/<%= photo['id'] %>')">
-                    <%= photo['name'] %>
+                    <img width="94px" height="70px" src="<%= photo['picture'] %>)" />
                 </a>
                 </li>
             <% end %>
         </ul>
     </div>
-
-          <div class="list">
-            <h3>Friends using this app</h3>
-            <ul class="friends">
-              <% @friends_using_app.each do |friend_result| %>
+    <div class="clearfix"></div>
+    <div class="list">
+        <h3>Friends using this app</h3>
+        <ul class="friends">
+            <% @friends_using_app.each do |friend_result| %>
                 <li>
-                  <a href="#" onclick="window.open('http://www.facebook.com/<%= friend_result['uid'] %>')">
+                <a href="#" onclick="window.open('http://www.facebook.com/<%= friend_result['uid'] %>')">
                     <img src="<%= friend_result['pic_square'] %>" alt="<%= friend_result['name'] %>">
                     <%= friend_result['name'] %>
-                  </a>
+                </a>
                 </li>
-              <% end %>
-            </ul>
-          </div>
-    <% end %>
+            <% end %>
+        </ul>
+    </div>
+<% else %>
+<% end %>

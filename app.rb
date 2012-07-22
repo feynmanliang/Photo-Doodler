@@ -96,7 +96,7 @@ get "/" do
   if session[:access_token]
     @user    = @graph.get_object("me")
     @friends = @graph.get_connections('me', 'friends')
-    @photos  = @graph.get_connections('me', 'photos')
+    @photos  = @graph.get_connections('me', 'photos').first(24)
     @likes   = @graph.get_connections('me', 'likes').first(4)
 
     # for other data you can always run fql

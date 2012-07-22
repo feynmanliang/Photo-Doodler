@@ -77,4 +77,17 @@
   background-position: 6px -37px;
 }
 
+ul.photos {
+	margin-left: 0; /* for IE */
+	padding-left: 0; /* for Netscape and Firefox */
+	width: 700px;
+	}
 
+ul.photos > li {
+	border: 1px solid silver;
+	float: left;
+	list-style: none; 
+	margin: 1px;
+	padding: 2px 5px;
+	width: 2.5cm;
+	}

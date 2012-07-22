@@ -29,8 +29,8 @@ end
 
 # Models
 class Doodle < ActiveRecord::Base
-    validates_presence_of :userID
-    validates_presence_of :photoID
+    validates_presence_of :userid
+    validates_presence_of :photoid
 end
 
 # Facebook BP Code
@@ -175,11 +175,11 @@ get '/doodles/new' do
     end
 end
 
-get '/doodles/new/:photoID' do
+get '/doodles/new/:photoid' do
     @graph, @app = fbinit()
     if session[:access_token]
         @userID = @graph.get_object("me")
-        @photoID = params[:photoID]
+        @photoID = params[:photoid]
 
         thisDoodle = Doodle.new(userID: @userID["id"].to_s,
                                 photoID: @photoID.to_s,
@@ -191,7 +191,7 @@ get '/doodles/new/:photoID' do
     end
 end
 
-get '/doodles/:photoID' do |photoID|
+get '/doodles/:photoid' do |photoID|
     @graph, @app = fbinit()
     if session[:access_token]
         @user    = @graph.get_object("me")
@@ -203,7 +203,7 @@ get '/doodles/:photoID' do |photoID|
     erb :showdoodle
 end
 
-get '/doodles/:photoID/json' do |photoID|
+get '/doodles/:photoid/json' do |photoID|
     content_type :json
     @graph, @app = fbinit()
     @graph  = Koala::Facebook::API.new(session[:access_token])
@@ -212,10 +212,10 @@ get '/doodles/:photoID/json' do |photoID|
     response = []
     doodles.each do |doodle|
         formatted_doodle = { data: doodle[:data],
-                             user_name: @graph.get_object(doodle[:userID])["name"],
-                             photo_url: @graph.get_object(doodle[:photoID])["source"],
-                             profile_photo_url: @graph.get_picture(doodle[:userID]),
-                             deleteable: doodle[:userID] == @graph.get_object("me")["id"]
+                             user_name: @graph.get_object(doodle[:userid])["name"],
+                             photo_url: @graph.get_object(doodle[:photoid])["source"],
+                             profile_photo_url: @graph.get_picture(doodle[:userid]),
+                             deleteable: doodle[:userid] == @graph.get_object("me")["id"]
         }
         response.push(formatted_doodle)
     end

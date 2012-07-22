@@ -2,7 +2,7 @@
    <div class="span12">
         <h3>Show/Edit Doodle</h3>
         <ul>
-	    	
+			<%= @photoid.to_s %>	    	
             <% @doodles.each do |doodle| %>
                 <li><%= doodle[:photoid] %>, <%= doodle[:id] %></li>
             <% end %>
@@ -10,9 +10,7 @@
     </div>
 <% end %>
 
-<html>
-  <body>
-  	<div id="photoid" style="visibility:hidden"><%= @photoid %></div>
+  	<div id="photoid" style="visibility:hidden"><%= @photoid.to_s %></div>
     <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
     <script type="text/javascript" src="../javascripts/jquery.json-2.3.min.js"></script>
@@ -102,5 +100,3 @@
 </div>
 	
 	<div id="sendjson"></div>
-  </body>
-</html>

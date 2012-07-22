@@ -203,7 +203,7 @@ post '/fetch_list' do
         string = string + "</ul>"
 end
 
-post '/:photoid/save' do
+post '/:photoid/save' do |photoid|
     @graph, @app = fbinit()
     if session[:access_token]
         @userid = @graph.get_object("me")
@@ -213,7 +213,7 @@ post '/:photoid/save' do
                                 photoid: @photoid.to_s,
                                 data: params[:data])
         new_doodle.save()
-        "1"
+        params.to_s
     else
         "0"
     end
@@ -261,6 +261,7 @@ end
 get '/:photoid' do |photoid|
     @graph, @app = fbinit()
     @graph  = Koala::Facebook::API.new(session[:access_token])
+    @photoid = photoid
     if photoid == 'favicon.ico'
         return nil
     end

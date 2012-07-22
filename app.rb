@@ -178,11 +178,11 @@ end
 get '/doodles/new/:photoid' do
     @graph, @app = fbinit()
     if session[:access_token]
-        @userID = @graph.get_object("me")
-        @photoID = params[:photoid]
+        @userid = @graph.get_object("me")
+        @photoid = params[:photoid]
 
-        thisDoodle = Doodle.new(userID: @userID["id"].to_s,
-                                photoID: @photoID.to_s,
+        thisDoodle = Doodle.new(userid: @userid["id"].to_s,
+                                photoid: @photoid.to_s,
                                 data: "")
         thisDoodle.save()
         redirect '/doodles/' + thisDoodle[:id].to_s
@@ -191,7 +191,7 @@ get '/doodles/new/:photoid' do
     end
 end
 
-get '/doodles/:photoid' do |photoID|
+get '/doodles/:photoid' do |photoid|
     @graph, @app = fbinit()
     if session[:access_token]
         @user    = @graph.get_object("me")
@@ -203,11 +203,11 @@ get '/doodles/:photoid' do |photoID|
     erb :showdoodle
 end
 
-get '/doodles/:photoid/json' do |photoID|
+get '/doodles/:photoid/json' do |photoid|
     content_type :json
     @graph, @app = fbinit()
     @graph  = Koala::Facebook::API.new(session[:access_token])
-    doodles = Doodle.where("photoid = ?", photoID)
+    doodles = Doodle.where("photoid = ?", photoid)
 
     response = []
     doodles.each do |doodle|

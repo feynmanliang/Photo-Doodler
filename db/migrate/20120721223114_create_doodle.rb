@@ -1,7 +1,7 @@
 class CreateDoodle < ActiveRecord::Migration
   def up
       create_table :doodles do |t|
-          t.text :data, { limit: 16777215 }
+          t.text :data, { limit: nil }
           t.string :userID
           t.string :photoID
           t.datetime :created_at

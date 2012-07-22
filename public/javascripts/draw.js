@@ -180,7 +180,7 @@ var drawingApp = (function () {
 			
 			//add existing doodles
 			if(existingDoodle.length > 0){
-				for(var i=0;i<existingDoodle.length; i++){
+				for(var i=1;i<existingDoodle.length; i++){
 					if(doodlesToBeShownArray == undefined)
 						drawPoints(eval(existingDoodle[i].data), 0);
 					else{
@@ -215,10 +215,16 @@ var drawingApp = (function () {
 		},
 		
 		save = function (){
-			var dataPoints = $.toJSON(drawingPoints);
-			
-			var doodleToSave = new Doodle(dataPoints);
-			doodleToSave.send();
+			if(drawingPoints.length == 0){
+				$("#sendjson").html("DRAW FIRST");
+			}
+			else{
+				var dataPoints = $.toJSON(drawingPoints);
+				
+				var doodleToSave = new Doodle(dataPoints);
+				doodleToSave.send();
+			}
+
 		};
 
 

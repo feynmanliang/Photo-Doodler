@@ -2,7 +2,7 @@ function Doodle(dataPoints){
 	this.data = dataPoints;
 
 	this.send = function (){
-		$("#sendjson").html(JSON.stringify(this));
+		//$("#sendjson").html(JSON.stringify(this));
 		var photoId = ($("#photoid").html()).toString();
 
 
@@ -12,7 +12,12 @@ function Doodle(dataPoints){
 			url: postAddress,
 			data: { data: this.data.toString() }
 		}).done(function( msg ) {
-			console.log(msg);
-		});		
+			if(msg == "1"){
+				$("#sendjson").html("SAVED");
+			}else if(msg == "0"){
+				$("#sendjson").html("SAVED FAILED");
+			}
+			else{}
+		});
 	}
 }

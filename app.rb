@@ -104,7 +104,6 @@ get "/post" do
     if session[:access_token]
         @graph.put_connections("me", "links", {:name => "Doodler", :link => params[:link], :picture => params[:picture_url]});
     end
-    "asdf"
 end
 
 get "/" do

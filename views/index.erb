@@ -1,74 +1,17 @@
-    <section id="get-started">
-      <p>Welcome to your Facebook app, running on <span>heroku</span>!</p>
-      <a href="https://devcenter.heroku.com/articles/facebook?utm_source=facebook&utm_medium=app&utm_campaign=fb_integration" target="_top" class="button">Learn How to Edit This App</a>
-    </section>
-
-
-    <% if @user %>
-    <section id="samples" class="clearfix">
-                        <strong><%= @user['name'] %></strong>
-                        <div id="share-app">
-                            <p>Share your app:</p>
-                            <ul>
-                                <li>
-                                <a href="#" class="facebook-button" id="postToWall" data-url="<%= url %>">
-                                    <span class="plus">Post to Wall</span>
-                                </a>
-                                </li>
-                                <li>
-                                <a href="#" class="facebook-button speech-bubble" id="sendToFriends" data-url="<%= url %>">
-                                    <span class="speech-bubble">Send Message</span>
-                                </a>
-                                </li>
-                                <li>
-                                <a href="#" class="facebook-button apprequests" id="sendRequest" data-message="Test this awesome app">
-                                    <span class="apprequests">Send Requests</span>
-                                </a>
-                                </li>
-                            </ul>
-                        </div>
-          <h1>Examples of the Facebook Graph API</h1>
-
-          <div class="list">
-            <h3>A few of your friends</h3>
-            <ul class="friends">
-              <% @friends.each do |friend| %>
+<% if @user %>
+    <h3>Recent photos</h3>
+    <div class="list">
+        <ul class="photos">
+            <% @photos.each_with_index do |photo, index| %>
                 <li>
-                  <a href="#" onclick="window.open('http://www.facebook.com/<%= friend['id']%>')">
-                    <img src="https://graph.facebook.com/<%= friend['id'] %>/picture?type=square" alt="<%= friend['name'] %>">
-                    <%= friend['name'] %>
-                  </a>
-                </li>
-              <% end %>
-            </ul>
-          </div>
-
-          <div class="list inline">
-            <h3>Recent photos</h3>
-            <ul class="photos">
-              <% @photos.each_with_index do |photo, index| %>
-                <li style="background-image: url(<%= photo['picture'] %>)" class='<%= 'first-column' if (index%4).zero? %>'>
-                  <a href="#" onclick="window.open('http://www.facebook.com/<%= photo['id'] %>')">
+                <img src="<%= photo['picture'] %>)" />
+                <a href="#" onclick="window.open('http://www.facebook.com/<%= photo['id'] %>')">
                     <%= photo['name'] %>
-                  </a>
+                </a>
                 </li>
-              <% end %>
-            </ul>
-          </div>
-
-          <div class="list">
-            <h3>Things you like</h3>
-            <ul class="things">
-              <% @likes.each do |like| %>
-                <li>
-                  <a href="#" onclick="window.open('http://www.facebook.com/<%= like['id'] %>')">
-                    <img src="https://graph.facebook.com/<%= like['id'] %>/picture?type=square" alt="<%= like['name'] %>">
-                    <%= like['name'] %>
-                  </a>
-                </li>
-              <% end %>
-            </ul>
-          </div>
+            <% end %>
+        </ul>
+    </div>
 
           <div class="list">
             <h3>Friends using this app</h3>
@@ -83,34 +26,4 @@
               <% end %>
             </ul>
           </div>
-        </section>
     <% end %>
-
-
-    <section id="guides" class="clearfix">
-      <h1>Learn More About Heroku &amp; Facebook Apps</h1>
-      <ul>
-        <li>
-          <a href="https://www.heroku.com/?utm_source=facebook&utm_medium=app&utm_campaign=fb_integration" target="_top" class="icon heroku">Heroku</a>
-          <p>Learn more about <a href="https://www.heroku.com/?utm_source=facebook&utm_medium=app&utm_campaign=fb_integration" target="_top">Heroku</a>, or read developer docs in the Heroku <a href="https://devcenter.heroku.com/" target="_top">Dev Center</a>.</p>
-        </li>
-        <li>
-          <a href="https://developers.facebook.com/docs/guides/web/" target="_top" class="icon websites">Websites</a>
-          <p>
-            Drive growth and engagement on your site with
-            Facebook Login and Social Plugins.
-          </p>
-        </li>
-        <li>
-          <a href="https://developers.facebook.com/docs/guides/mobile/" target="_top" class="icon mobile-apps">Mobile Apps</a>
-          <p>
-            Integrate with our core experience by building apps
-            that operate within Facebook.
-          </p>
-        </li>
-        <li>
-          <a href="https://developers.facebook.com/docs/guides/canvas/" target="_top" class="icon apps-on-facebook">Apps on Facebook</a>
-          <p>Let users find and connect to their friends in mobile apps and games.</p>
-        </li>
-      </ul>
-    </section>

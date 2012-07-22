@@ -8,7 +8,7 @@
     <meta name="author" content="Feynman Liang, Eduardo Salinas, JJ Liu">
 
     <link rel="stylesheet" href="../stylesheets/bootstrap.css" type="text/css" />
-    <link rel="stylesheet" href="stylesheets/custom.css" type="text/css" />
+    <link rel="stylesheet" href="../stylesheets/custom.css" type="text/css" />
     <style type="text/css">
       body {
         padding-top: 60px;
@@ -148,7 +148,13 @@
           <a class="brand" href="<%= @app['@app'] %>"><%= @app['name'] %></a>
           <div class="btn-group pull-right">
               <% if @user %>
-                  <p id="picture" style="background-image: url(https://graph.facebook.com/<%= @user['id'] %>/picture?type=normal)"></p>
+                  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                      <i class="icon-user"></i>Logged in as <strong><%= @user['name'] %></strong>
+                      <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li><a href="../sign_out">Sign Out</a></li>
+                  </ul>
               <% else %>
                   <a href='/auth/facebook' class="fb_button fb_button_medium">
                       <span class="fb_button_text">Log In</span>

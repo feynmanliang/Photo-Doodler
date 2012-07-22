@@ -115,7 +115,7 @@ get "/" do
         @photos  = @graph.get_connections('me', 'photos')
         @friends_using_app = @graph.fql_query("SELECT uid, name, is_app_user, pic_square FROM user WHERE uid in (SELECT uid2 FROM friend WHERE uid1 = me()) AND is_app_user = 1")
     end
-    @recent_doodles = Doodle.find(:all, :order => "id desc", :limit => 6).reverse
+    @recent_doodles = Doodle.find(:all, :order => "updated_at desc", :limit => 6).reverse
     erb :index
 end
 
@@ -213,12 +213,33 @@ get '/doodles/:photoid/json' do |photoid|
     response = []
     @doodles.each do |doodle|
         formatted_doodle = { data: doodle[:data],
-                             user_name: @graph.get_object(doodle[:userid])["name"],
-                             photo_url: @graph.get_object(doodle[:photoid])["source"],
-                             profile_photo_url: @graph.get_picture(doodle[:userid]),
-                             deleteable: doodle[:userid] == @graph.get_object("me")["id"]
+            user_name: @graph.get_object(doodle[:userid])["name"],
+            photo_url: @graph.get_object(doodle[:photoid])["source"],
+            profile_photo_url: @graph.get_picture(doodle[:userid]),
+            deleteable: doodle[:userid] == @graph.get_object("me")["id"]
         }
         response.push(formatted_doodle)
     end
     response.to_json
+end
+
+get '/friends' do
+    @graph, @app = fbinit()
+    if session[:access_token]
+        @friends  = @graph.get_connections('me', 'friends')
+    end
+    erb :friends
+end
+post '/fetch_list' do
+    @graph, @app = fbinit()
+    if session[:access_token]
+        @photos  = @graph.get_connections( params[:id] , 'photos')
+    end
+    string =  "<ul class='gridlist'>"
+    @photos.each_with_index do |photo, index|
+        string += "<li> " + "<a href='./"+photo['id']+"')'>" +
+       " <img width='94px' height='70px' src='" + photo['picture'] + "' />" +
+        "</a> </li>"
+    end
+        string = string + "</ul>"
 end

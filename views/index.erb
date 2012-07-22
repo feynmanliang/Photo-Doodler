@@ -12,18 +12,6 @@
             <% end %>
         </ul>
     </div>
-    <div class="span12">
-        <h3>Recent Doodles</h3>
-        <ul class="gridlist">
-            <% @recent_doodles.each do |doodle| %>
-                <li>
-                <a href="./<%= doodle[:photoid] %>">
-                <img src='<%= @graph.get_object(doodle[:photoid])["source"] %>'>
-                </a>
-                </li>
-            <% end %>
-        </ul>
-    </div>
 <% else %>
     <div class="hero-unit">
         <h1>Photo Doodler</h1>

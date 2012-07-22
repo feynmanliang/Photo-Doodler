@@ -129,7 +129,8 @@ end
 
 get '/auth/facebook/callback' do
     session[:access_token] = authenticator.get_access_token(params[:code])
-    redirect '/'
+    #redirect '/'
+    redirect 'http://127.0.0.1:5000/doodles/10150788524506026/json'
 end
 
 get '/doodles' do
@@ -186,5 +187,19 @@ end
 
 get '/doodles/:photoID/json' do |photoID|
     content_type :json
-    Doodle.where("photoID = ?", photoID).to_json
+    @graph, @app = fbinit()
+    @graph  = Koala::Facebook::API.new(session[:access_token])
+    doodles = Doodle.where("photoID = ?", photoID)
+
+    response = []
+    doodles.each do |doodle|
+        user = @graph.get_object(doodle[:userID])
+        photo = @graph.get_object(doodle[:pictureID])
+        formatted_doodle = { data: doodle[:data],
+                             user_name: user["name"],
+#                             photo_url: photo["source"],
+        }
+        response.push(formatted_doodle)
+    end
+    response.to_json
 end

@@ -10,6 +10,8 @@
                 </li>
             <% end %>
         </ul>
+            <a href="/list?page=<%= CGI.escape @photos.paging['previous'] %>">prev</a>
+            <a href="/list?page=<%= CGI.escape @photos.paging['next'] %>">next</a>
     </div>
     <div class="clearfix"></div>
     <div class="list">

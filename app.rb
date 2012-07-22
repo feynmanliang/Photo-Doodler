@@ -95,14 +95,11 @@ error(Koala::Facebook::APIError) do
     redirect "/auth/facebook"
 end
 
-get "/post" do
-    # Get base API Connection
-    @graph  = Koala::Facebook::API.new(session[:access_token])
+get "/post/:link" do |link|
+    @graph, @app = fbinit()
 
-    # Get public details of current application
-    @app  =  @graph.get_object(ENV["FACEBOOK_APP_ID"])
-    if session[:access_token]
-        @graph.put_connections("me", "links", {:name => "Doodler", :link => params[:link], :picture => params[:picture_url]});
+   if session[:access_token]
+        @graph.put_connections("me", "links", {:name => "Doodler", :link => link});
     end
 end
 

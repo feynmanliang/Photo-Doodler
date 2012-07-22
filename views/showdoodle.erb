@@ -45,47 +45,6 @@
 			});
 
 			});
-
-		
-			var d1 = [
-				{"id":"ddddd","userId":"jj","photoId":"pppppp",
-						'dataPoints':[
-						{'x':95,'y':30,'color':'#cb3594','tool':'crayon','size':'normal','drag':false},
-						{'x':50,'y':30,'color':'#cb3594','tool':'crayon','size':'normal','drag':true}
-					]
-				},
-				{"id":"ddddd","userId":"jj2","photoId":"pppppp",
-						'dataPoints':[
-						{'x':195,'y':30,'color':'#986928','tool':'crayon','size':'normal','drag':false},
-						{'x':150,'y':30,'color':'#986928','tool':'crayon','size':'normal','drag':true}
-					]
-				}
-			];
-			
-			var d3 =  [
-			{"data": "",
-			"user_name": "Feynman Liang",
-			"photo_url": "https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-snc7/s720x720/581069_10150788524506026_243835281_n.jpg",
-			"profile_photo_url": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/202998_644816025_8099069_q.jpg",
-			"deleteable": true
-			}, {
-			"data": "",
-			"user_name": "Feynman Liang",
-			"photo_url": "https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-snc7/s720x720/581069_10150788524506026_243835281_n.jpg",
-			"profile_photo_url": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/202998_644816025_8099069_q.jpg",
-			"deleteable": true
-			}];
-			
-			var d2 = [
-				{"id":"ddddd","userId":"jj","photoId":"pppppp",
-						'dataPoints':[
-						{'x':95,'y':30,'color':'#cb3594','tool':'crayon','size':'normal','drag':false},
-						{'x':50,'y':30,'color':'#cb3594','tool':'crayon','size':'normal','drag':true}
-					]
-				}
-			];
-
-
 		});
 
 	</script>
@@ -96,6 +55,10 @@
 	<div id ="canvasDiv" style="float: left; width: 750px;"></div>
 	<div style="float: left; width: 150px;">
 		<button type="button" onclick="drawingApp.save()">Save</button>	
+        <a href="#" class="facebook-button" id="postToWall" data-url="<%= url + "/" + @photoid %>">
+            <span class="plus">Post to Wall</span>
+        </a>
+        <!--<button type="button" onclick="$.get('/post'+window.location.pathname);">Share</button>	-->
 		<div id="doodleSelector"></div>
 	</div>
 	<br style="clear: left;" />

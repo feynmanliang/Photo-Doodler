@@ -102,7 +102,7 @@ get "/post" do
     # Get public details of current application
     @app  =  @graph.get_object(ENV["FACEBOOK_APP_ID"])
     if session[:access_token]
-        @graph.put_connections("me", "links", {:name => "le goog", :link => "www.google.com", :picture => "http://lh4.googleusercontent.com/-v0soe-ievYE/AAAAAAAAAAI/AAAAAAAAdPc/JRVJ5ihOy2U/photo.jpg?sz=116"});
+        @graph.put_connections("me", "links", {:name => "Doodler", :link => params[:link], :picture => params[:picture_url]});
     end
     "asdf"
 end

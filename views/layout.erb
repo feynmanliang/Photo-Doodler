@@ -30,7 +30,7 @@
     <meta property="og:url" content="<%= url %>" />
     <meta property="og:image" content="<%= url('/logo.png') %>" />
     <meta property="og:site_name" content="<%= @app['name'] %>" />
-    <meta property="og:description" content="My First App" />
+    <meta property="og:description" content="Doodle on your Facebook photos!" />
     <meta property="fb:app_id" content="<%= @app['name'] %>" />
 
     <script type="text/javascript" src="/javascripts/jquery-1.7.1.min.js"></script>
@@ -145,7 +145,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="<%= @app['@app'] %>"><%= @app['name'] %></a>
+          <a class="brand" href="/"><%= @app['name'] %></a>
           <div class="btn-group pull-right">
               <% if @user %>
                   <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -159,8 +159,7 @@
           </div>
            <div class="nav-collapse">
             <ul class="nav">
-                <li><a id="choose-new-link" href="../doodles/new">Create New</a></li>
-                <li><a id="choose-existing-link" href="../doodles">Show Existing</a></li>
+                <li><a id="choose-new-link" href="../new">Create New</a></li>
              </ul>
           </div><!--/.nav-collapse -->
         </div>

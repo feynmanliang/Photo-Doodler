@@ -6,10 +6,12 @@ require 'uri'
 
 configure :development do
     set :database, 'mysql://root:toor@localhost/doodler'
+    set :adapter, 'mysql'
 end
 
 configure :test do
     set :database, 'mysql://root:toor@localhost/doodler'
+    set :adapter, 'mysql'
 end
 
 configure :production do
@@ -27,11 +29,11 @@ end
 
 # Models
 class Doodle < ActiveRecord::Base
-
+    validates_presence_of :userID
+    validates_presence_of :photoID
 end
 
 # Facebook BP Code
-
 enable :sessions
 set :raise_errors, false
 set :show_exceptions, false
@@ -77,6 +79,14 @@ helpers do
         @authenticator ||= Koala::Facebook::OAuth.new(ENV["FACEBOOK_APP_ID"], ENV["FACEBOOK_SECRET"], url("/auth/facebook/callback"))
     end
 
+    def fbinit
+        # Get base API Connection
+        @graph  = Koala::Facebook::API.new(session[:access_token])
+
+        # Get public details of current application
+        @app  =  @graph.get_object(ENV["FACEBOOK_APP_ID"])
+        return @graph, @app
+    end
 end
 
 # the facebook session expired! reset ours and restart the process
@@ -98,41 +108,14 @@ get "/post" do
     "asdf"
 end
 
-get "/list" do
-    # Get base API Connection
-    @graph  = Koala::Facebook::API.new(session[:access_token])
-
-    # Get public details of current application
-    @app  =  @graph.get_object(ENV["FACEBOOK_APP_ID"])
-
-    if session[:access_token]
-        fake_graph_collection = Koala::Facebook::GraphCollection.new({"data" => []}, @graph)
-    # use GraphCollection's method to get Koala-friendly params from the Facebook URL
-    url_params = fake_graph_collection.parse_page_url(params[:page])
-    # then use those params to get the next page
-    @results = @graph.get_page(url_params)
-
-     #   @results = params[:page] ? @graph.get_page(params[:page]) : @graph.get_connections("me", "photos")
-        erb :list_gen
-    end
-end
-
 get "/" do
-    # Get base API Connection
-    @graph  = Koala::Facebook::API.new(session[:access_token])
-
-    # Get public details of current application
-    @app  =  @graph.get_object(ENV["FACEBOOK_APP_ID"])
-
+    @graph, @app = fbinit()
     if session[:access_token]
         @user    = @graph.get_object("me")
-        @friends = @graph.get_connections('me', 'friends')
         @photos  = @graph.get_connections('me', 'photos')
-        @likes   = @graph.get_connections('me', 'likes').first(4)
-
-        # for other data you can always run fql
         @friends_using_app = @graph.fql_query("SELECT uid, name, is_app_user, pic_square FROM user WHERE uid in (SELECT uid2 FROM friend WHERE uid1 = me()) AND is_app_user = 1")
     end
+    @recent_doodles = Doodle.find(:all, :order => "id desc", :limit => 6).reverse
     erb :index
 end
 
@@ -159,4 +142,62 @@ end
 get '/auth/facebook/callback' do
     session[:access_token] = authenticator.get_access_token(params[:code])
     redirect '/'
+end
+
+get '/doodles' do
+    @graph, @app = fbinit()
+    if session[:access_token]
+        @user    = @graph.get_object("me")
+        @friends_using_app = @graph.fql_query("SELECT uid, name, is_app_user, pic_square FROM user WHERE uid in (SELECT uid2 FROM friend WHERE uid1 = me()) AND is_app_user = 1")
+        erb :doodles
+    else
+        redirect '/'
+    end
+end
+
+get '/doodles/new' do
+    @graph, @app = fbinit()
+    if session[:access_token]
+        @user    = @graph.get_object("me")
+        if params[:page]
+            fake_graph_collection = Koala::Facebook::GraphCollection.new({"data" => []}, @graph)
+            url_params = fake_graph_collection.parse_page_url(params[:page])
+            @photos = @graph.get_page(url_params)
+        else
+            @photos  = @graph.get_connections('me', 'photos')
+        end
+        @friends_using_app = @graph.fql_query("SELECT uid, name, is_app_user, pic_square FROM user WHERE uid in (SELECT uid2 FROM friend WHERE uid1 = me()) AND is_app_user = 1")
+        @friends = @graph.get_connections('me', 'friends')
+        erb :newdoodle
+    else
+        redirect '/'
+    end
+end
+
+get '/doodles/new/:photoID' do
+    @graph, @app = fbinit()
+    if session[:access_token]
+        @userID = @graph.get_object("me")
+        @photoID = params[:photoID]
+
+        thisDoodle = Doodle.new(userID: @userID["id"].to_s,
+                                photoID: @photoID.to_s,
+                                data: "")
+        thisDoodle.save()
+        redirect '/doodles/' + thisDoodle[:id].to_s
+    else
+        redirect '/'
+    end
+end
+
+get '/doodles/:doodleID' do |doodleID|
+    @graph, @app = fbinit()
+    if session[:access_token]
+        @user    = @graph.get_object("me")
+        @photos  = @graph.get_connections('me', 'photos').first(24)
+        @friends_using_app = @graph.fql_query("SELECT uid, name, is_app_user, pic_square FROM user WHERE uid in (SELECT uid2 FROM friend WHERE uid1 = me()) AND is_app_user = 1")
+    else
+        redirect '/'
+    end
+    erb :showdoodle
 end

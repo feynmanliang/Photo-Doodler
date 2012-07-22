@@ -212,10 +212,10 @@ get '/doodles/:photoID/json' do |photoID|
     response = []
     doodles.each do |doodle|
         user = @graph.get_object(doodle[:userID])
-        photo = @graph.get_object(doodle[:pictureID])
+        photo = @graph.get_object(doodle[:photoID])
         formatted_doodle = { data: doodle[:data],
                              user_name: user["name"],
-#                             photo_url: photo["source"],
+                             photo_url: photo["source"],
         }
         response.push(formatted_doodle)
     end

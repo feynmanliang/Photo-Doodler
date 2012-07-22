@@ -1,12 +1,6 @@
 <% if @user %>
    <div class="span12">
         <h3>Show/Edit Doodle</h3>
-        <ul>
-			<%= @photoid.to_s %>	    	
-            <% @doodles.each do |doodle| %>
-                <li><%= doodle[:photoid] %>, <%= doodle[:id] %></li>
-            <% end %>
-        </ul>
     </div>
 <% end %>
 
@@ -19,10 +13,8 @@
     <script type="text/javascript" src="../javascripts/point.js"></script>
     <script type="text/javascript" src="../javascripts/doodle.js"></script>
     <script type="text/javascript" src="../javascripts/doodleSelector.js"></script>
+    <script type="text/javascript" src="../javascripts/izzyColor.js"></script>
 	
-	<style type="text/css"> 
-
-	</style>
     <script type="text/javascript">
 
 		$(document).ready(function() {
@@ -43,62 +35,23 @@
 				});
 				drawingApp.initialImage(eval(msg), checked);
 			});
-
 			});
 
-		
-			var d1 = [
-				{"id":"ddddd","userId":"jj","photoId":"pppppp",
-						'dataPoints':[
-						{'x':95,'y':30,'color':'#cb3594','tool':'crayon','size':'normal','drag':false},
-						{'x':50,'y':30,'color':'#cb3594','tool':'crayon','size':'normal','drag':true}
-					]
-				},
-				{"id":"ddddd","userId":"jj2","photoId":"pppppp",
-						'dataPoints':[
-						{'x':195,'y':30,'color':'#986928','tool':'crayon','size':'normal','drag':false},
-						{'x':150,'y':30,'color':'#986928','tool':'crayon','size':'normal','drag':true}
-					]
-				}
-			];
-			
-			var d3 =  [
-			{"data": "",
-			"user_name": "Feynman Liang",
-			"photo_url": "https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-snc7/s720x720/581069_10150788524506026_243835281_n.jpg",
-			"profile_photo_url": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/202998_644816025_8099069_q.jpg",
-			"deleteable": true
-			}, {
-			"data": "",
-			"user_name": "Feynman Liang",
-			"photo_url": "https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-snc7/s720x720/581069_10150788524506026_243835281_n.jpg",
-			"profile_photo_url": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/202998_644816025_8099069_q.jpg",
-			"deleteable": true
-			}];
-			
-			var d2 = [
-				{"id":"ddddd","userId":"jj","photoId":"pppppp",
-						'dataPoints':[
-						{'x':95,'y':30,'color':'#cb3594','tool':'crayon','size':'normal','drag':false},
-						{'x':50,'y':30,'color':'#cb3594','tool':'crayon','size':'normal','drag':true}
-					]
-				}
-			];
-
-
+			$("#color").change(function () {
+				alert(1);
+			});
 		});
 
 	</script>
-	
 
-	
 <div style="width: 900px;">
 	<div id ="canvasDiv" style="float: left; width: 750px;"></div>
 	<div style="float: left; width: 150px;">
+		<div><input style="width: 80px" type="text" value="#CCCC66" class="izzyColor" id="color"></div>
 		<button type="button" onclick="drawingApp.save()">Save</button>	
 		<div id="doodleSelector"></div>
 	</div>
 	<br style="clear: left;" />
 </div>
 	
-	<div id="sendjson"></div>
+<div id="sendjson"></div>

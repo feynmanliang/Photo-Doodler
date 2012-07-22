@@ -19,7 +19,7 @@ var drawingApp = (function () {
 		existingPoints = [],
 
 		paint = false,
-		curColor = colorPurple,
+		curColor = "#cb3594",
 		curTool = "crayon",
 		curSize = "normal",
 		drawingAreaX = 0,
@@ -97,6 +97,7 @@ var drawingApp = (function () {
 				} else {
 					//context.globalCompositeOperation = "source-over";	// To erase instead of draw over with white
 					context.strokeStyle = points[i].color;
+					console.log(points[i].color);
 				}
 				context.lineCap = "round";
 				context.lineJoin = "round";
@@ -114,6 +115,7 @@ var drawingApp = (function () {
 		// @param y
 		// @param dragging
 		addClick = function (x, y, dragging) {
+			//console.log(curColor);
 			var p = new Point(x, y, curColor, curSize, dragging);
 			drawingPoints.push(p);
 		},
@@ -190,9 +192,7 @@ var drawingApp = (function () {
 				
 		// Creates a canvas element, loads images, adds events, and draws the canvas for the first time.
 		init = function (existingDoodle) {
-
-			
-			backgroundImage.src = "http://i.telegraph.co.uk/multimedia/archive/02227/google-doodle-robe_2227469b.jpg";
+			backgroundImage.src = existingDoodle[0].photo_url;
 			backgroundImage.onload = function () {
 				canvasWidth = backgroundImage.width;
 				canvasHeight = backgroundImage.height;

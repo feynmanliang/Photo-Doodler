@@ -226,6 +226,7 @@ post '/fetch_list' do
         "</a> </li>"
     end
         string = string + "</ul>"
+end
 post '/:photoid/save' do
     @graph, @app = fbinit()
     if session[:access_token]

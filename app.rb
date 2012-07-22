@@ -6,10 +6,12 @@ require 'uri'
 
 configure :development do
     set :database, 'mysql://root:toor@localhost/doodler'
+    set :adapter, 'mysql'
 end
 
 configure :test do
     set :database, 'mysql://root:toor@localhost/doodler'
+    set :adapter, 'mysql'
 end
 
 configure :production do
@@ -27,11 +29,11 @@ end
 
 # Models
 class Doodle < ActiveRecord::Base
-
+    validates_presence_of :userID
+    validates_presence_of :photoID
 end
 
 # Facebook BP Code
-
 enable :sessions
 set :raise_errors, false
 set :show_exceptions, false
@@ -101,6 +103,7 @@ get "/" do
         @photos  = @graph.get_connections('me', 'photos').first(24)
         @friends_using_app = @graph.fql_query("SELECT uid, name, is_app_user, pic_square FROM user WHERE uid in (SELECT uid2 FROM friend WHERE uid1 = me()) AND is_app_user = 1")
     end
+    @recent_doodles = Doodle.find(:all, :order => "id desc", :limit => 6).reverse
     erb :index
 end
 
@@ -159,11 +162,11 @@ get '/doodles/new/:photoID' do
         @userID = @graph.get_object("me")
         @photoID = params[:photoID]
 
-        thisDoodle = Doodle.new(userID: @userID,
-                                photoID: @photoID,
+        thisDoodle = Doodle.new(userID: @userID["id"].to_s,
+                                photoID: @photoID.to_s,
                                 data: "")
         thisDoodle.save()
-        redirect '/doodles' + thisDoodle[:id]
+        redirect '/doodles/' + thisDoodle[:id].to_s
     else
         redirect '/'
     end

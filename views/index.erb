@@ -1,18 +1,5 @@
 <% if @user %>
-    <h3>Recent photos</h3>
-    <div class="list">
-        <ul class="photos">
-            <% @photos.each_with_index do |photo, index| %>
-                <li>
-                <a href="#" onclick="window.open('http://www.facebook.com/<%= photo['id'] %>')">
-                    <img width="94px" height="70px" src="<%= photo['picture'] %>)" />
-                </a>
-                </li>
-            <% end %>
-        </ul>
-    </div>
-    <div class="clearfix"></div>
-    <div class="list">
+   <div class="span12">
         <h3>Friends using this app</h3>
         <ul class="friends">
             <% @friends_using_app.each do |friend_result| %>
@@ -26,4 +13,23 @@
         </ul>
     </div>
 <% else %>
+    <div class="hero-unit">
+        <h1>Photo Doodler</h1>
+        <p>Photo Doodler lets you collaboratively doodle on your Facebook photos.
+        Annotate, draw, or just doodle and then share it with your friends!
+        <p><a class="btn btn-primary btn-large" href="/auth/facebook">Get Started Now &raquo;</a></p>
+    </div>
 <% end %>
+
+<div class="span12">
+    <h3>Recent Doodles</h3>
+    <ul class="gridlist">
+        <% @recent_doodles.each do |doodle| %>
+            <li>
+            <%= doodle[:id] %>
+            <%= doodle[:userID] %>
+            <%= doodle[:photoID] %>
+            </li>
+        <% end %>
+    </ul>
+</div>

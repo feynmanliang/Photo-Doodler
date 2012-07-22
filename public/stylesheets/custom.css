@@ -77,13 +77,12 @@
   background-position: 6px -37px;
 }
 
-ul.photos {
+ul.gridlist {
 	margin-left: 0; /* for IE */
 	padding-left: 0; /* for Netscape and Firefox */
-	width: 700px;
 	}
 
-ul.photos > li {
+ul.gridlist > li {
 	border: 1px solid silver;
 	float: left;
 	list-style: none; 

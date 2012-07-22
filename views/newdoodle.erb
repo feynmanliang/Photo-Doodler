@@ -1,10 +1,10 @@
 <% if @user %>
     <h3>Select a Photo</h3>
-    <div class="list">
-        <ul class="photos">
+    <div class="span12">
+        <ul class="gridlist">
             <% @photos.each_with_index do |photo, index| %>
                 <li>
-                <a href="#" onclick="window.location('../doodles/new/<%= photo['id'] %>')">
+                <a href="../doodles/new/<%= photo['id'] %>">
                     <img width="94px" height="70px" src="<%= photo['picture'] %>)" />
                 </a>
                 </li>

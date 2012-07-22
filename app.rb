@@ -162,32 +162,6 @@ get '/new' do
     end
 end
 
-get '/:photoid' do |photoid|
-    @graph, @app = fbinit()
-    @graph  = Koala::Facebook::API.new(session[:access_token])
-    @photoid = photoid
-    if session[:access_token]
-        @user    = @graph.get_object("me")
-        if /^[\d]+(\.[\d]+){0,1}$/ === photoid
-            @doodles = Doodle.where("photoid = ?", photoid)
-            if @doodles.length != 0
-                erb :showdoodle
-            else
-                begin
-                    @graph.get_object(photoid)
-                rescue
-                    redirect '/'
-                end
-                erb :showdoodle
-            end
-        else
-            redirect '/'
-        end
-    else
-        redirect '/'
-    end
-end
-
 get '/:photoid/json' do |photoid|
     content_type :json
     @graph, @app = fbinit()
@@ -214,6 +188,7 @@ get '/friends' do
     end
     erb :friends
 end
+
 post '/fetch_list' do
     @graph, @app = fbinit()
     if session[:access_token]
@@ -227,6 +202,7 @@ post '/fetch_list' do
     end
         string = string + "</ul>"
 end
+
 post '/:photoid/save' do
     @graph, @app = fbinit()
     if session[:access_token]
@@ -259,30 +235,6 @@ get '/:photoid/:doodleid/delete' do |photoid, doodleid|
     end
 end
 
-get '/:photoid' do |photoid|
-    @graph, @app = fbinit()
-    @graph  = Koala::Facebook::API.new(session[:access_token])
-    if session[:access_token]
-        @user    = @graph.get_object("me")
-        if /^[\d]+(\.[\d]+){0,1}$/ === photoid
-            @doodles = Doodle.where("photoid = ?", photoid)
-            if @doodles.length != 0
-                erb :showdoodle
-            else
-                begin
-                    @graph.get_object(photoid)
-                rescue
-                    redirect '/'
-                end
-                erb :showdoodle
-            end
-        else
-            redirect '/'
-        end
-    else
-        redirect '/'
-    end
-end
 
 get '/seeddata' do
     @graph, @app = fbinit()
@@ -305,4 +257,32 @@ get '/seeddata' do
     end
 end
 
+
+get '/:photoid' do |photoid|
+    @graph, @app = fbinit()
+    @graph  = Koala::Facebook::API.new(session[:access_token])
+    if photoid == 'favicon.ico'
+        return nil
+    end
+    if session[:access_token]
+        @user    = @graph.get_object("me")
+        if /^[\d]+(\.[\d]+){0,1}$/ === photoid
+            @doodles = Doodle.where("photoid = ?", photoid)
+            if @doodles.length != 0
+                erb :showdoodle
+            else
+                begin
+                    @graph.get_object(photoid)
+                rescue
+                    redirect '/'
+                end
+                erb :showdoodle
+            end
+        else
+            redirect '/'
+        end
+    else
+        redirect '/'
+    end
+end
 

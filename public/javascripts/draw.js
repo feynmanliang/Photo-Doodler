@@ -37,7 +37,7 @@ var drawingApp = (function () {
 
 		// Redraws the canvas.
 		drawPoints = function (points, startPoint) {
-			console.log(startPoint);
+			if(points==null){return;}
 
 			var locX,
 				locY,
@@ -179,12 +179,14 @@ var drawingApp = (function () {
 			context.drawImage(backgroundImage, drawingAreaX, drawingAreaY, drawingAreaWidth, drawingAreaHeight);
 			
 			//add existing doodles
-			for(var i=0;i<existingDoodle.length; i++){
-				if(doodlesToBeShownArray == undefined)
-					drawPoints(eval(existingDoodle[i].data), 0);
-				else{
-					if($.inArray(i.toString(), doodlesToBeShownArray) != -1)
+			if(existingDoodle.length > 0){
+				for(var i=0;i<existingDoodle.length; i++){
+					if(doodlesToBeShownArray == undefined)
 						drawPoints(eval(existingDoodle[i].data), 0);
+					else{
+						if($.inArray(i.toString(), doodlesToBeShownArray) != -1)
+							drawPoints(eval(existingDoodle[i].data), 0);
+					}
 				}
 			}
 			drawPoints(drawingPoints,0);

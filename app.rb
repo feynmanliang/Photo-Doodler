@@ -213,7 +213,7 @@ post '/:photoid/save' do |photoid|
                                 photoid: @photoid.to_s,
                                 data: params[:data])
         new_doodle.save()
-        params.to_s
+        "1"
     else
         "0"
     end
@@ -234,29 +234,6 @@ get '/:photoid/:doodleid/delete' do |photoid, doodleid|
         redirect '/'
     end
 end
-
-
-get '/seeddata' do
-    @graph, @app = fbinit()
-    if session[:access_token]
-        @userid = @graph.get_object("me")
-        @photoid = "10150788524506026"
-
-        d1 = Doodle.new(userid: @userid["id"].to_s,
-                                photoid: @photoid.to_s,
-                                data: "[{'x':95,'y':30,'color':'#cb3594','tool':'crayon','size':'normal','drag':false},{'x':50,'y':30,'color':'#cb3594','tool':'crayon','size':'normal','drag':true}]")
-        d1.save()
-
-        d2 = Doodle.new(userid: @userid["id"].to_s,
-                        photoid: @photoid.to_s,
-                        data: "[{'x':195,'y':30,'color':'#986928','tool':'crayon','size':'normal','drag':false},{'x':150,'y':30,'color':'#986928','tool':'crayon','size':'normal','drag':true}]")
-        d2.save()
-        redirect '/'
-    else
-        "Not Logged In!"
-    end
-end
-
 
 get '/:photoid' do |photoid|
     @graph, @app = fbinit()

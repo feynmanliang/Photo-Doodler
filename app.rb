@@ -245,6 +245,10 @@ get '/:photoid' do |photoid|
             if @doodles.length != 0
                 erb :showdoodle
             else
+                newDoodle = Doodle.new(userid: @user["id"],
+                                       photoid: photoid,
+                                       data: "")
+                newDoodle.save()
                 begin
                     @graph.get_object(photoid)
                 rescue

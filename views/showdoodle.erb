@@ -2,7 +2,7 @@
    <div class="span12">
         <h3>Show/Edit Doodle</h3>
         <ul>
-	    
+	    	
             <% @doodles.each do |doodle| %>
                 <li><%= doodle[:photoid] %>, <%= doodle[:id] %></li>
             <% end %>
@@ -12,6 +12,7 @@
 
 <html>
   <body>
+  	<div id="photoid" style="visibility:hidden"><%= @photoid %></div>
     <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
     <script type="text/javascript" src="../javascripts/jquery.json-2.3.min.js"></script>
@@ -91,16 +92,11 @@
 	
 
 	
-<div style="width: 700px;">
-	<div id ="canvasDiv" style="float: left; width: 500px;"></div>
-	<div style="float: left; width: 200px;">
-		<button type="button" onclick="drawingApp.save()">Save</button>
-		<button type="button" onclick="drawingApp.initialImage(eval(d2))">img</button>	
-	
-		<div id="doodleSelector">
-		</div>	
-	
-	
+<div style="width: 900px;">
+	<div id ="canvasDiv" style="float: left; width: 750px;"></div>
+	<div style="float: left; width: 150px;">
+		<button type="button" onclick="drawingApp.save()">Save</button>	
+		<div id="doodleSelector"></div>
 	</div>
 	<br style="clear: left;" />
 </div>

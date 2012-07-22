@@ -18,7 +18,6 @@
             <% @recent_doodles.each do |doodle| %>
                 <li>
                 <a href="./<%= doodle[:photoid] %>">
-                    <img src="<%= @graph.get_object(doodle[:photoid])["picture"] %>"/>
                 </a>
                 </li>
             <% end %>

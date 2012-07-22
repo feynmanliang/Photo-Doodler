@@ -6,8 +6,8 @@ var drawingApp = (function () {
 
 	var canvas,
 		context,
-		canvasWidth = 490,
-		canvasHeight = 350,
+		canvasWidth,
+		canvasHeight,
 		colorPurple = "#cb3594",
 		colorGreen = "#659b41",
 		colorYellow = "#ffcf33",
@@ -24,8 +24,8 @@ var drawingApp = (function () {
 		curSize = "normal",
 		drawingAreaX = 0,
 		drawingAreaY = 0,
-		drawingAreaWidth = canvasWidth-2,
-		drawingAreaHeight = canvasHeight-2,
+		drawingAreaWidth,
+		drawingAreaHeight,
 
 		totalLoadResources = 1,
 		curLoadResNum = 0,
@@ -190,32 +190,32 @@ var drawingApp = (function () {
 				
 		// Creates a canvas element, loads images, adds events, and draws the canvas for the first time.
 		init = function (existingDoodle) {
-			// Create the canvas (Neccessary for IE because it doesn't know what a canvas element is)
-			canvas = document.createElement('canvas');
-			canvas.setAttribute('width', canvasWidth);
-			canvas.setAttribute('height', canvasHeight);
-			canvas.setAttribute('id', 'canvas');
-			document.getElementById('canvasDiv').appendChild(canvas);
-			if (typeof G_vmlCanvasManager !== "undefined") {
-				canvas = G_vmlCanvasManager.initElement(canvas);
-			}
-			context = canvas.getContext("2d"); // Grab the 2d canvas context
-			// Note: The above code is a workaround for IE 8 and lower. Otherwise we could have used:
-			//     context = document.getElementById('canvas').getContext("2d");
+
 			
-			backgroundImage.src = "images/background.jpg";
+			backgroundImage.src = "http://i.telegraph.co.uk/multimedia/archive/02227/google-doodle-robe_2227469b.jpg";
 			backgroundImage.onload = function () {
+				canvasWidth = backgroundImage.width;
+				canvasHeight = backgroundImage.height;
+				drawingAreaWidth = canvasWidth-2;
+				drawingAreaHeight = canvasHeight-2;
+				// Create the canvas (Neccessary for IE because it doesn't know what a canvas element is)
+				canvas = document.createElement('canvas');
+				canvas.setAttribute('width', canvasWidth);
+				canvas.setAttribute('height', canvasHeight);
+				canvas.setAttribute('id', 'canvas');
+				document.getElementById('canvasDiv').appendChild(canvas);
+				if (typeof G_vmlCanvasManager !== "undefined") {
+					canvas = G_vmlCanvasManager.initElement(canvas);
+				}
+				context = canvas.getContext("2d"); // Grab the 2d canvas context
 				resourceLoaded(existingDoodle)
 			};
 		},
 		
 		save = function (){
 			var dataPoints = $.toJSON(drawingPoints);
-			var user = "jj";
-			var photoId = "pppppp";
-			var doodleId = "ddddd";
 			
-			var doodleToSave = new Doodle(doodleId, user, photoId, dataPoints);
+			var doodleToSave = new Doodle(dataPoints);
 			doodleToSave.send();
 		};
 

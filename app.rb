@@ -114,7 +114,7 @@ get "/" do
         @photos  = @graph.get_connections('me', 'photos')
         @friends_using_app = @graph.fql_query("SELECT uid, name, is_app_user, pic_square FROM user WHERE uid in (SELECT uid2 FROM friend WHERE uid1 = me()) AND is_app_user = 1")
     end
-    @recent_doodles = Doodle.find(:all, :order => "id desc", :limit => 6).reverse
+    @recent_doodles = Doodle.find(:all, :order => "updated_at desc", :limit => 6).reverse
     erb :index
 end
 
@@ -162,6 +162,7 @@ get '/new' do
     end
 end
 
+<<<<<<< HEAD
 get '/:photoid' do |photoid|
     @graph, @app = fbinit()
     @graph  = Koala::Facebook::API.new(session[:access_token])
@@ -188,6 +189,8 @@ get '/:photoid' do |photoid|
     end
 end
 
+=======
+>>>>>>> master
 get '/:photoid/json' do |photoid|
     content_type :json
     @graph, @app = fbinit()
@@ -197,16 +200,43 @@ get '/:photoid/json' do |photoid|
     response = []
     @doodles.each do |doodle|
         formatted_doodle = { data: doodle[:data],
+<<<<<<< HEAD
                              user_name: @graph.get_object(doodle[:userid])["name"],
                              #photo_url: @graph.get_object(doodle[:photoid])["source"],
                              profile_photo_url: @graph.get_picture(doodle[:userid]),
                              deleteable: doodle[:userid] == @graph.get_object("me")["id"]
+=======
+            user_name: @graph.get_object(doodle[:userid])["name"],
+            photo_url: @graph.get_object(doodle[:photoid])["source"],
+            profile_photo_url: @graph.get_picture(doodle[:userid]),
+            deleteable: doodle[:userid] == @graph.get_object("me")["id"]
+>>>>>>> master
         }
         response.push(formatted_doodle)
     end
     response.to_json
 end
 
+get '/friends' do
+    @graph, @app = fbinit()
+    if session[:access_token]
+        @friends  = @graph.get_connections('me', 'friends')
+    end
+    erb :friends
+end
+post '/fetch_list' do
+    @graph, @app = fbinit()
+    if session[:access_token]
+        @photos  = @graph.get_connections( params[:id] , 'photos')
+    end
+    string =  "<ul class='gridlist'>"
+    @photos.each_with_index do |photo, index|
+        string += "<li> " + "<a href='./"+photo['id']+"')'>" +
+       " <img width='94px' height='70px' src='" + photo['picture'] + "' />" +
+        "</a> </li>"
+    end
+        string = string + "</ul>"
+end
 post '/:photoid/save' do
     @graph, @app = fbinit()
     if session[:access_token]
@@ -238,3 +268,51 @@ get '/:photoid/:doodleid/delete' do |photoid, doodleid|
         redirect '/'
     end
 end
+
+get '/:photoid' do |photoid|
+    @graph, @app = fbinit()
+    @graph  = Koala::Facebook::API.new(session[:access_token])
+    if session[:access_token]
+        @user    = @graph.get_object("me")
+        if /^[\d]+(\.[\d]+){0,1}$/ === photoid
+            @doodles = Doodle.where("photoid = ?", photoid)
+            if @doodles.length != 0
+                erb :showdoodle
+            else
+                begin
+                    @graph.get_object(photoid)
+                rescue
+                    redirect '/'
+                end
+                erb :showdoodle
+            end
+        else
+            redirect '/'
+        end
+    else
+        redirect '/'
+    end
+end
+
+get '/seeddata' do
+    @graph, @app = fbinit()
+    if session[:access_token]
+        @userid = @graph.get_object("me")
+        @photoid = "10150788524506026"
+
+        d1 = Doodle.new(userid: @userid["id"].to_s,
+                                photoid: @photoid.to_s,
+                                data: "[{'x':95,'y':30,'color':'#cb3594','tool':'crayon','size':'normal','drag':false},{'x':50,'y':30,'color':'#cb3594','tool':'crayon','size':'normal','drag':true}]")
+        d1.save()
+
+        d2 = Doodle.new(userid: @userid["id"].to_s,
+                        photoid: @photoid.to_s,
+                        data: "[{'x':195,'y':30,'color':'#986928','tool':'crayon','size':'normal','drag':false},{'x':150,'y':30,'color':'#986928','tool':'crayon','size':'normal','drag':true}]")
+        d2.save()
+        redirect '/'
+    else
+        "Not Logged In!"
+    end
+end
+
+

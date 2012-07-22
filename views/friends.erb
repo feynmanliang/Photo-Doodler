@@ -1,0 +1,51 @@
+<script>
+	$(function() {
+        var availableTags = [
+        <% @friends.each do | friend |  %>
+            { label : "<%=friend["name"]%>", value : "<%=friend["id"]%>"},
+        <% end %>
+		];
+        $("#tags").autocomplete({
+			source: availableTags,
+    /* snip */
+    select: function(event, ui) {
+        event.preventDefault();
+        $("#tags").val(ui.item.label);
+        $("#selected_id").val(ui.item.value);
+    },
+    focus: function(event, ui) {
+        event.preventDefault();
+        $("#tags").val(ui.item.label);
+    }
+});
+    });
+
+
+
+	</script>
+
+
+	
+<div class="demo">
+
+<div class="ui-widget">
+    <form action="" id="form" method="get" accept-charset="utf-8">
+        <label for="tags">Friends: </label>
+        <input id="tags">
+        <input type="hidden" name="id" id="selected_id" value="" />
+        <input type="submit" name="" id="" value="fetch photos" />
+    </form>
+    <script type="text/javascript" charset="utf-8">
+        $("#form").submit(function(event) {
+
+    /* stop form from submitting normally */
+                event.preventDefault(); 
+        $.post("fetch_list", $("#form").serialize(), function(data) {
+            $("#gridlist").html(data);
+   })});
+    </script>
+</div>
+<div id="gridlist">
+    
+</div>
+</div><!-- End demo -->

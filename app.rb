@@ -166,7 +166,7 @@ get '/:photoid/json' do |photoid|
     content_type :json
     @graph, @app = fbinit()
     @graph  = Koala::Facebook::API.new(session[:access_token])
-    @doodles = Doodle.where("photoid = ?", photoid)
+    @doodles = Doodle.where("photoid = ?", photoid).reverse
 
     response = []
     @doodles.each do |doodle|

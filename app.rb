@@ -207,7 +207,7 @@ get '/doodles/:photoID/json' do |photoID|
     content_type :json
     @graph, @app = fbinit()
     @graph  = Koala::Facebook::API.new(session[:access_token])
-    doodles = Doodle.where("photoID = ?", photoID)
+    doodles = Doodle.where("photoid = ?", photoID)
 
     response = []
     doodles.each do |doodle|

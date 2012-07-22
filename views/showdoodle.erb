@@ -1,0 +1,10 @@
+<% if @user %>
+   <div class="span12">
+        <h3>Show/Edit Doodle</h3>
+        <ul>
+            <% @doodles.each do |doodle| %>
+                <li><%= doodle[:photoid] %>, <%= doodle[:id] %></li>
+            <% end %>
+        </ul>
+    </div>
+<% end %>

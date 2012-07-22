@@ -213,9 +213,9 @@ post '/:photoid/save' do
                                 photoid: @photoid.to_s,
                                 data: params[:data])
         new_doodle.save()
-        redirect '/' + new_doodle[:photoid].to_s
+        "1"
     else
-        redirect '/'
+        "0"
     end
 end
 

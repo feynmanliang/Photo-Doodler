@@ -162,7 +162,6 @@ get '/new' do
     end
 end
 
-<<<<<<< HEAD
 get '/:photoid' do |photoid|
     @graph, @app = fbinit()
     @graph  = Koala::Facebook::API.new(session[:access_token])
@@ -189,8 +188,6 @@ get '/:photoid' do |photoid|
     end
 end
 
-=======
->>>>>>> master
 get '/:photoid/json' do |photoid|
     content_type :json
     @graph, @app = fbinit()
@@ -200,17 +197,10 @@ get '/:photoid/json' do |photoid|
     response = []
     @doodles.each do |doodle|
         formatted_doodle = { data: doodle[:data],
-<<<<<<< HEAD
-                             user_name: @graph.get_object(doodle[:userid])["name"],
-                             #photo_url: @graph.get_object(doodle[:photoid])["source"],
-                             profile_photo_url: @graph.get_picture(doodle[:userid]),
-                             deleteable: doodle[:userid] == @graph.get_object("me")["id"]
-=======
             user_name: @graph.get_object(doodle[:userid])["name"],
             photo_url: @graph.get_object(doodle[:photoid])["source"],
             profile_photo_url: @graph.get_picture(doodle[:userid]),
             deleteable: doodle[:userid] == @graph.get_object("me")["id"]
->>>>>>> master
         }
         response.push(formatted_doodle)
     end
